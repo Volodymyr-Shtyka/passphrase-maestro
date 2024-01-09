@@ -1,118 +1,68 @@
+// Define character arrays
 // Array of special characters to be included in password
-var specialCharacters = [
-    '@',
-    '%',
-    '+',
-    '\\',
-    '/',
-    "'",
-    '!',
-    '#',
-    '$',
-    '^',
-    '?',
-    ':',
-    ',',
-    ')',
-    '(',
-    '}',
-    '{',
-    ']',
-    '[',
-    '~',
-    '-',
-    '_',
-    '.'
-];
+const specialCharacters = ['@', '%', '+', '\\', '/', "'", '!', '#', '$', '^', '?', ':', ',', ')', '(', '}', '{', ']', '[', '~', '-', '_', '.'];
 
 // Array of numeric characters to be included in password
-var numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // Array of lowercase characters to be included in password
-var lowerCasedCharacters = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z'
-];
+const lowerCasedCharacters = Array.from({ length: 26 }, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i));
 
 // Array of uppercase characters to be included in password
-var upperCasedCharacters = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z'
-];
+const upperCasedCharacters = Array.from({ length: 26 }, (_, i) => String.fromCharCode('A'.charCodeAt(0) + i));
 
-// Function to prompt user for password options
+// Function to gather user preferences for password generation
 function getPasswordOptions() {
+    const length = parseInt(prompt("How long would you like your password to be? (Enter a number between 8 and 128)"));
 
+    if (isNaN(length) || length < 8 || length > 128) {
+        alert("Invalid password length. Please try again.");
+        return null;
+    }
+
+    const inclLowercase = confirm("Include lowercase characters?");
+    const inclUppercase = confirm("Include uppercase characters?");
+    const inclNumbers = confirm("Include numeric characters?");
+    const inclSpecial = confirm("Include special characters?");
+
+    if (!(inclLowercase || inclUppercase || inclNumbers || inclSpecial)) {
+        alert("Please select at least one character type.");
+        return null;
+    }
+
+    return { length, inclLowercase, inclUppercase, inclNumbers, inclSpecial };
 }
 
-// Function for getting a random element from an array
-function getRandom(arr) {
-
+// Function to get a random element from an array
+function getRandomElement(arr) {
+    const index = Math.floor(Math.random() * arr.length);
+    return arr[index];
 }
 
-// Function to generate password with user input
+// Function to generate a password based on user preferences
 function generatePassword() {
+    const options = getPasswordOptions();
 
+    if (!options) return null;
+
+    const charactersArr = [];
+
+    // The spread operator (...) is used to concatenate the arrays
+    if (options.inclLowercase) charactersArr.push(...lowerCasedCharacters);
+    if (options.inclUppercase) charactersArr.push(...upperCasedCharacters);
+    if (options.inclNumbers) charactersArr.push(...numericCharacters);
+    if (options.inclSpecial) charactersArr.push(...specialCharacters);
+
+    // Generates an array of random characters and then concatenates them into a string
+    return Array.from({ length: options.length }, () => getRandomElement(charactersArr)).join('');
 }
 
-// Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
+// Get reference to the 'Generate Password' button
+const generateBtn = document.querySelector('#generate');
 
-// Write password to the #password input
-function writePassword() {
-    var password = generatePassword();
-    var passwordText = document.querySelector('#password');
-
-    passwordText.value = password;
-}
-
-// Add event listener to generate button
-generateBtn.addEventListener('click', writePassword);
+// Event listener for password generation
+generateBtn.addEventListener('click', function () {
+    const generatedPassword = generatePassword();
+    const passwordText = document.querySelector('#password');
+    passwordText.value = generatedPassword || 'No valid password generated';
+});
