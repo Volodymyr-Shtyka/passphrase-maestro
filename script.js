@@ -39,18 +39,22 @@ function getRandomElement(arr) {
     return arr[index];
 }
 
-// Function to generate password with user input
+// Function to generate a password based on user preferences
 function generatePassword() {
     const options = getPasswordOptions();
 
-console.log(getRandomElement(specialCharacters));
-console.log(getRandomElement(numericCharacters));
-console.log(getRandomElement(lowerCasedCharacters));
-console.log(getRandomElement(upperCasedCharacters));
-
     if (!options) return null;
 
-    return null;
+    const charactersArr = [];
+
+    // The spread operator (...) is used to concatenate the arrays
+    if (options.inclLowercase) charactersArr.push(...lowerCasedCharacters);
+    if (options.inclUppercase) charactersArr.push(...upperCasedCharacters);
+    if (options.inclNumbers) charactersArr.push(...numericCharacters);
+    if (options.inclSpecial) charactersArr.push(...specialCharacters);
+
+    // Generates an array of random characters and then concatenates them into a string
+    return Array.from({ length: options.length }, () => getRandomElement(charactersArr)).join('');
 }
 
 // Get reference to the 'Generate Password' button
