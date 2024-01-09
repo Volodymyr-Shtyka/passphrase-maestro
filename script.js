@@ -13,7 +13,7 @@ const upperCasedCharacters = Array.from({ length: 26 }, (_, i) => String.fromCha
 
 // Function to prompt user for password options
 function getPasswordOptions() {
-
+    return null;
 }
 
 // Function for getting a random element from an array
@@ -23,19 +23,19 @@ function getRandom(arr) {
 
 // Function to generate password with user input
 function generatePassword() {
+    const options = getPasswordOptions();
 
+    if (!options) return null;
+
+    return null;
 }
 
-// Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
+// Get reference to the 'Generate Password' button
+const generateBtn = document.querySelector('#generate');
 
-// Write password to the #password input
-function writePassword() {
-    var password = generatePassword();
-    var passwordText = document.querySelector('#password');
-
-    passwordText.value = password;
-}
-
-// Add event listener to generate button
-generateBtn.addEventListener('click', writePassword);
+// Event listener for password generation
+generateBtn.addEventListener('click', function () {
+    const generatedPassword = generatePassword();
+    const passwordText = document.querySelector('#password');
+    passwordText.value = generatedPassword || 'No valid password generated';
+});
