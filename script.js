@@ -11,9 +11,26 @@ const lowerCasedCharacters = Array.from({ length: 26 }, (_, i) => String.fromCha
 // Array of uppercase characters to be included in password
 const upperCasedCharacters = Array.from({ length: 26 }, (_, i) => String.fromCharCode('A'.charCodeAt(0) + i));
 
-// Function to prompt user for password options
+// Function to gather user preferences for password generation
 function getPasswordOptions() {
-    return null;
+    const length = parseInt(prompt("How long would you like your password to be? (Enter a number between 8 and 128)"));
+
+    if (isNaN(length) || length < 8 || length > 128) {
+        alert("Invalid password length. Please try again.");
+        return null;
+    }
+
+    const inclLowercase = confirm("Include lowercase characters?");
+    const inclUppercase = confirm("Include uppercase characters?");
+    const inclNumbers = confirm("Include numeric characters?");
+    const inclSpecial = confirm("Include special characters?");
+
+    if (!(inclLowercase || inclUppercase || inclNumbers || inclSpecial)) {
+        alert("Please select at least one character type.");
+        return null;
+    }
+
+    return { length, inclLowercase, inclUppercase, inclNumbers, inclSpecial };
 }
 
 // Function for getting a random element from an array
@@ -24,7 +41,7 @@ function getRandom(arr) {
 // Function to generate password with user input
 function generatePassword() {
     const options = getPasswordOptions();
-
+console.log('options', options);
     if (!options) return null;
 
     return null;
