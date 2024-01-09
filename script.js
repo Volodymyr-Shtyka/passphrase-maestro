@@ -33,15 +33,21 @@ function getPasswordOptions() {
     return { length, inclLowercase, inclUppercase, inclNumbers, inclSpecial };
 }
 
-// Function for getting a random element from an array
-function getRandom(arr) {
-
+// Function to get a random element from an array
+function getRandomElement(arr) {
+    const index = Math.floor(Math.random() * arr.length);
+    return arr[index];
 }
 
 // Function to generate password with user input
 function generatePassword() {
     const options = getPasswordOptions();
-console.log('options', options);
+
+console.log(getRandomElement(specialCharacters));
+console.log(getRandomElement(numericCharacters));
+console.log(getRandomElement(lowerCasedCharacters));
+console.log(getRandomElement(upperCasedCharacters));
+
     if (!options) return null;
 
     return null;
